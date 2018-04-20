@@ -3,6 +3,7 @@
  */
 package com.mum.edu.chapter01.arrayandstring;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,41 +23,37 @@ import java.util.List;
 public class Sum3 {
   public static List<List<Integer>> threeSum(int[] nums) {
     Arrays.sort(nums);
-
+    List<List<Integer>> results = new ArrayList<>();
     for (int i = 0; i < nums.length - 2; i++) {
-      System.out.println("======i="+i+"=======");
-      int low = i + 1;
-      int high = nums.length - 1;
-      while (low < high) {
-        int sum = nums[i] + nums[low] + nums[high];
-        if (sum == 0) {
-          System.out.println(nums[i] + " " + nums[low] + " " + nums[high]);
-          while (low < high && nums[low] == nums[low + 1]) {
+      if (i == 0 || (i > 0 && nums[i - 1] != nums[i])) {
+        int low = i + 1;
+        int high = nums.length - 1;
+        while (low < high) {
+          int sum = nums[i] + nums[low] + nums[high];
+          if (sum == 0) {
+            results.add(Arrays.asList(nums[i], nums[low], nums[high]));
+            while (low < high && nums[low] == nums[low + 1]) {
+              low++;
+            }
+            while (low < high && nums[high] == nums[high - 1]) {
+              high--;
+            }
+            low++;
+            high--;
+          } else if (sum > 0) {
+            high--;
+          } else {
             low++;
           }
-          while (low < high && nums[high] == nums[high - 1]) {
-            high--;
-          }
-          low++; 
-          high--;
-        } else if (sum > 0) {
-          while (low < high && nums[low] == nums[low + 1]) {
-            low++;
-          }
-          high--;
-        } else {
-          while (low < high && nums[high] == nums[high - 1]) {
-            high--;
-          }
-          low++;
         }
       }
     }
 
-    return null;
+    return results;
   }
 
   public static void main(String[] args) {
-    threeSum(new int[] {-1, 0, 1, 2, -1, -4});
+    System.out
+        .println(threeSum(new int[] {-4, -2, 1, -5, -4, -4, 4, -2, 0, 4, 0, -2, 3, 1, -5, 0}));
   }
 }
